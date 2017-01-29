@@ -6,6 +6,7 @@ from keras import backend as K
 from inspect import getargspec
 import numpy as np
 from . import backend
+import sys
 
 
 '''Provides a simpler API for building complex recurrent neural networks using Keras.
@@ -329,7 +330,7 @@ class RecurrentContainer(Layer):
 				last_output = _get_last_timestep(outputs)
 				states = [K.in_train_phase(states_1[i], states_0[i]) for i in range(len(states_0))]
 			else:
-				last_output, outputs, states, updates = rnn(self.step, K.zeros((1, self.output_length, 1)), initial_states, unroll=unroll, input_length=self.output_length)
+				last_output, outputs, states, updates = rnn(self.step, K.zeros((sys.BATCH_SIZE, self.output_length, 1)), initial_states, unroll=unroll, input_length=self.output_length)
 		else:
 			if self.uses_learning_phase:
 				with learning_phase(0):
